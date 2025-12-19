@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>八字生成器</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page">
+    <div style="text-align: center; margin-bottom: 10px; color: #c9a961; font-size: 20px; letter-spacing: 20px;">
+      ◇ ◆ ◇ ◆ ◇
+    </div>
+    <h1>八字生成器</h1>
+    <div class="subtitle">根据出生信息推算四柱八字，并简要分析本年事业、财运与桃花/婚姻运</div>
+    <div style="text-align: center; margin-top: -20px; margin-bottom: 20px; color: #c9a961; font-size: 20px; letter-spacing: 20px;">
+      ◇ ◆ ◇ ◆ ◇
+    </div>
+
+    <div class="card">
+      <div class="card-header">一、请输入基本信息</div>
+      <form id="baziForm">
+        <div class="form-group">
+          <label for="name">姓名</label>
+          <input id="name" name="name" type="text" placeholder="如：张三" />
+        </div>
+
+        <div class="form-group">
+          <label>性别</label>
+          <div class="radio-group">
+            <label>
+              <input type="radio" name="gender" value="male" checked />
+              男
+            </label>
+            <label>
+              <input type="radio" name="gender" value="female" />
+              女
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="year">出生年份</label>
+          <input
+            id="year"
+            name="year"
+            type="number"
+            min="1900"
+            max="2100"
+            placeholder="例如：1990"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="month">出生月份</label>
+          <select id="month" name="month">
+            <option value="">请选择</option>
+            <option value="1">1月</option>
+            <option value="2">2月</option>
+            <option value="3">3月</option>
+            <option value="4">4月</option>
+            <option value="5">5月</option>
+            <option value="6">6月</option>
+            <option value="7">7月</option>
+            <option value="8">8月</option>
+            <option value="9">9月</option>
+            <option value="10">10月</option>
+            <option value="11">11月</option>
+            <option value="12">12月</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="day">出生日</label>
+          <input
+            id="day"
+            name="day"
+            type="number"
+            min="1"
+            max="31"
+            placeholder="1~31"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="hour">出生时</label>
+          <select id="hour" name="hour">
+            <option value="">请选择</option>
+            <option value="0">0 时</option>
+            <option value="1">1 时</option>
+            <option value="2">2 时</option>
+            <option value="3">3 时</option>
+            <option value="4">4 时</option>
+            <option value="5">5 时</option>
+            <option value="6">6 时</option>
+            <option value="7">7 时</option>
+            <option value="8">8 时</option>
+            <option value="9">9 时</option>
+            <option value="10">10 时</option>
+            <option value="11">11 时</option>
+            <option value="12">12 时</option>
+            <option value="13">13 时</option>
+            <option value="14">14 时</option>
+            <option value="15">15 时</option>
+            <option value="16">16 时</option>
+            <option value="17">17 时</option>
+            <option value="18">18 时</option>
+            <option value="19">19 时</option>
+            <option value="20">20 时</option>
+            <option value="21">21 时</option>
+            <option value="22">22 时</option>
+            <option value="23">23 时</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="minute">出生分钟</label>
+          <input
+            id="minute"
+            name="minute"
+            type="number"
+            min="0"
+            max="59"
+            placeholder="0~59，可不填"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="place">出生地</label>
+          <input
+            id="place"
+            name="place"
+            type="text"
+            placeholder="如：北京、上海、广州"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="queryYear">查询年份（可选）</label>
+          <input
+            id="queryYear"
+            name="queryYear"
+            type="number"
+            min="1900"
+            max="2100"
+            placeholder="例如：2025（留空则显示本年、明年、今日）"
+          />
+        </div>
+
+        <div class="actions">
+          <button type="button" id="resetBtn">清空</button>
+          <button type="submit" id="generateBtn">生成八字</button>
+        </div>
+        <div id="error" class="error"></div>
+      </form>
+    </div>
+
+    <div class="card results" id="resultCard">
+      <div class="card-header">二、排盘结果与本年运势</div>
+
+      <div class="result-section" id="basicInfoSection">
+        <div class="result-title">1. 基本信息</div>
+        <div class="result-content" id="basicInfo"></div>
+      </div>
+
+      <div class="result-section" id="baziSection">
+        <div class="result-title">2. 四柱八字</div>
+        <div class="result-content">
+          <div class="bazi-line" id="baziLine"></div>
+          <div class="bazi-sub" id="baziDetail"></div>
+        </div>
+      </div>
+
+      <div class="result-section" id="fortuneSection">
+        <div class="result-title">
+          3. 本年运势概览
+          <span class="tag" id="yearTag"></span>
+        </div>
+        <div class="result-content" id="careerFortune"></div>
+        <div class="result-content" id="wealthFortune" style="margin-top: 6px;"></div>
+        <div class="result-content" id="loveFortune" style="margin-top: 6px;"></div>
+        <div class="result-content" id="summaryFortune" style="margin-top: 6px;"></div>
+      </div>
+
+      <div class="result-section" id="nextYearFortuneSection">
+        <div class="result-title">
+          4. 明年运势概览
+          <span class="tag" id="nextYearTag"></span>
+        </div>
+        <div class="result-content" id="nextYearCareerFortune"></div>
+        <div class="result-content" id="nextYearWealthFortune" style="margin-top: 6px;"></div>
+        <div class="result-content" id="nextYearLoveFortune" style="margin-top: 6px;"></div>
+        <div class="result-content" id="nextYearSummaryFortune" style="margin-top: 6px;"></div>
+      </div>
+
+      <div class="result-section" id="todayFortuneSection">
+        <div class="result-title">
+          5. 今日运势概览
+          <span class="tag" id="todayTag"></span>
+        </div>
+        <div class="result-content" id="todayCareerFortune"></div>
+        <div class="result-content" id="todayWealthFortune" style="margin-top: 6px;"></div>
+        <div class="result-content" id="todayLoveFortune" style="margin-top: 6px;"></div>
+        <div class="result-content" id="todaySummaryFortune" style="margin-top: 6px;"></div>
+      </div>
+
+      <div class="result-section" id="queryYearFortuneSection" style="display: none;">
+        <div class="result-title">
+          6. 指定年份运势分析
+          <span class="tag" id="queryYearTag"></span>
+        </div>
+        <div class="result-content" id="queryYearCareerFortune"></div>
+        <div class="result-content" id="queryYearWealthFortune" style="margin-top: 6px;"></div>
+        <div class="result-content" id="queryYearLoveFortune" style="margin-top: 6px;"></div>
+        <div class="result-content" id="queryYearSummaryFortune" style="margin-top: 6px;"></div>
+      </div>
+    </div>
+
+    <div class="footer">
+      本页面基于传统八字命理作简化推演，忽略了历法细节及个体差异，仅供学习和娱乐参考，<br />
+      不构成任何决策依据或专业建议，请理性看待。
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+
